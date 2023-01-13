@@ -1,0 +1,249 @@
+
+
+<!doctype html>
+<html lang="pt-br"><head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://dantas.com/normalize.css">
+<link rel="stylesheet" href="https://dantas.com/w3.css">
+<style>
+img {
+	margin:auto;
+	width:95vw;
+	height:auto;
+	text-align:center;
+	display:block;
+	border:1em solid silver;
+}
+body {
+	background-color:hsl(240,40%,90%);
+	padding:3em;
+}
+input {
+	font-family : monospace;
+	font-size : xxx-large;
+	text-align : center;
+}
+#numeros1 {
+	width : 9vw;
+}
+#numeros2 {
+	width : 13vw;
+}
+#alfa1 {
+	width : 15vw;
+}
+#alfa2 {
+	width : 18vw;
+}
+#password {
+	width : 22vw;
+}
+table {
+	border: 0;
+	background-color:inherit;
+	margin-top:1em;
+}
+th, td {
+	border: 1px solid black;
+	background-color:silver;
+}
+th, td {
+	font-family:Courier New, monospace;
+	background-color:white;
+}
+th {
+	font-size:xx-large;
+}
+td {
+	font-size:2vw;
+	padding: 0.3em 0.6em;
+	font-weight:800;
+	text-align:center;
+}
+tr.cabecalho th {
+	background-color:white;
+	font-size:small;
+	padding : 1em;
+	text-align:justify;
+}
+tr td:first-child {
+	background-color : white;
+	font-size : large;
+}
+tr.cabecalho th:first-child {
+	visibility:hidden;
+}
+td {
+	background-color:inherit;
+}
+tr:nth-child(2n) {
+	background-color:silver;
+}
+tr:nth-child(2n+1) {
+	background-color:lightgray;
+}
+body {
+  -webkit-print-color-adjust: exact !important;
+  padding:2em;
+}
+* { 
+	color-adjust: exact;
+	-webkit-print-color-adjust: exact;
+	print-color-adjust: exact; 
+}
+div.container {
+	display : flex;
+	flex-direction : row;
+	flex-wrap : wrap;
+	justify-content : space-around;
+}
+button.item {
+	align-self : center;
+	font-size : large;
+	background-color : white;
+	color : black;
+	padding:1.8vmin;
+}
+span.destaque {
+	background-color:silver;
+	font-size:large;
+	padding:0.3em;
+}
+</style>
+</head>
+<body>
+<div class=container>
+    <button class="item" onclick="geraTabela()">Clique aqui para ver algumas sugestões de senha; clique novamente para ver outras sugestões.</button>
+</div>
+    <table id="passwordTable">
+	  <tr class=cabecalho>
+	  <th></th>
+	  <th>6 algarismos</th>
+	  <th>8 algarismos</th>
+	  <th>8 caracteres, incluindo pelo menos uma letra maiúscula, uma minúscula, um algarismo e um caractere especial do grupo <span class=destaque>. _ = ! # \</span></th>
+	  <th>10 caracteres diversos, escolhidos para evitar erros de leitura</th>
+	  <th>12 letras</th>
+	  <th>16 caracteres de todos os tipos, inclusive caracteres especiais do grupo de 32 caracteres <span class=destaque>~ ` ! @ # $ % ^ &amp; * ( ) _ - + = { [ } ] | &bsol; : ; &quot; ' &lt; , > . ? /</span></th>
+	  </tr>
+    </table>
+    <script>
+      function generatePassword(z) {
+        // Set up an array of characters to include in the password
+        var characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~`!@#$%^&*()_-+={[}]|\\:;\"'<,>.?/";
+        var seletos = "abcdefghijkmnopqrstuvwxyzACDEFGHJKLMNPQRSTUVWXYZ2345679._=!#\\";
+		var numbers = '0123456789';
+
+        // Set the password length
+		var compr1 = 6;
+		var compr2 = 8;
+		var compr5 = 8;
+		var compr3 = 10;
+		var compr4 = 12;
+        var passwordLength = 16;
+
+
+        // Set up a blank string that we'll fill with characters from the array
+        var password = "";
+		var n1 = '';
+		var n2 = '';
+		var senhatipica = '';
+		var letras1 = '';
+		var letras2 = '';
+
+        // Choose random characters from the array and add them to the password string until it's the correct length
+        for (var i = 0; i < compr1; i++) {
+          n1 += numbers.charAt(Math.floor(Math.random() * numbers.length));
+        }
+        for (var i = 0; i < compr2; i++) {
+          n2 += numbers.charAt(Math.floor(Math.random() * numbers.length));
+        }
+
+        do {
+            senhatipica = '';
+			for (var i = 0; i < compr5; i++) {
+				senhatipica += seletos.charAt(Math.floor(Math.random() * seletos.length));
+			}
+        }
+        while (!testString(senhatipica));
+
+        for (var i = 0; i < compr3; i++) {
+          letras1 += seletos.charAt(Math.floor(Math.random() * seletos.length));
+        }
+        for (var i = 0; i < compr4; i++) {
+          letras2 += characters.charAt(Math.floor(Math.random() * 52));
+        }
+        for (var i = 0; i < passwordLength; i++) {
+          var temp = characters.charAt(Math.floor(Math.random() * characters.length));
+		  if (temp == '&') { temp = '&amp;'; };
+		  if (temp == '<') { temp = '&lt;'; };
+          password += temp;
+        }
+
+
+	  // Get a reference to the password table
+      var table = document.getElementById("passwordTable");
+
+          // Add a row to the table with the password
+          var row = table.insertRow();
+          var cell1 = row.insertCell(0);
+          var cell2 = row.insertCell(1);
+          var cell3 = row.insertCell(2);
+          var cell4 = row.insertCell(3);
+          var cell5 = row.insertCell(4);
+          var cell6 = row.insertCell(5);
+          var cell7 = row.insertCell(6);
+          cell1.innerHTML = z;
+          cell2.innerHTML = n1;
+          cell3.innerHTML = n2;
+          cell4.innerHTML = senhatipica;
+          cell5.innerHTML = letras1;
+          cell6.innerHTML = letras2;
+          cell7.innerHTML = password;
+
+  
+	  }
+	  
+	function geraTabela() {
+      var table = document.getElementById("passwordTable");
+	  var temp = "<tr class=cabecalho><th></th><th>6 algarismos</th><th>8 algarismos</th>";
+		temp += "<th>8 caracteres, incluindo pelo menos uma letra maiúscula, uma minúscula, um algarismo e um caractere especial do grupo <span class=destaque>. _ = ! # &bsol;</span></th>";
+		temp += "<th>10 caracteres diversos, escolhidos para evitar erros de leitura</th>";
+		temp += "<th>12 letras</th><th>16 caracteres de todos os tipos";
+		temp += ", inclusive caracteres especiais do grupo de 32 caracteres ";
+		temp += "<span class=destaque>~ ` ! @ # $ % ^ &amp; * ( ) _ - + = { [ } ] | &bsol; : ; &quot; ' &lt; , > . ? /</span></th></tr>";
+		table.innerHTML = temp;
+        // Generate 10 random passwords
+        for (var i = 1; i <= 20; i++) {
+          // Generate a random password
+          
+		  generatePassword(i);
+
+        }
+	}
+	
+	function testString(string) {
+		var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/;
+	return regex.test(string);
+}
+
+	
+    </script>
+	
+	
+  </body>
+</html>
+
+
+<!--
+<button onclick="emptyElement()">Empty Element</button>
+
+<div id="myElement">
+  This element will be emptied when the button is clicked.
+</div>
+
+<script>
+  function emptyElement() {
+    document.getElementById('myElement').innerHTML = '';
+  }
+</script>
+-->
